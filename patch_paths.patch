@@ -1,0 +1,56 @@
+diff --git a/wfb_ng/server.py b/wfb_ng/server.py
+index 1407b2e..53ecab4 100644
+--- a/wfb_ng/server.py
++++ b/wfb_ng/server.py
+@@ -93,18 +93,18 @@ def init_wlans(max_bw, wlans):
+         return
+ 
+     try:
+-        yield call_and_check_rc('iw', 'reg', 'set', settings.common.wifi_region)
++        yield call_and_check_rc('@iw@/bin/iw', 'reg', 'set', settings.common.wifi_region)
+         for wlan in wlans:
+             if settings.common.set_nm_unmanaged and os.path.exists('/usr/bin/nmcli'):
+-                device_status = yield call_and_check_rc('nmcli', 'device', 'show', wlan, log_stdout=False)
++                device_status = yield call_and_check_rc('@networkmanager@/bin/nmcli', 'device', 'show', wlan, log_stdout=False)
+                 if not b'(unmanaged)' in device_status:
+                     log.msg('Switch %s to unmanaged state' % (wlan,))
+-                    yield call_and_check_rc('nmcli', 'device', 'set', wlan, 'managed', 'no')
++                    yield call_and_check_rc('@networkmanager@/bin/nmcli', 'device', 'set', wlan, 'managed', 'no')
+                     yield df_sleep(1)
+ 
+-            yield call_and_check_rc('ip', 'link', 'set', wlan, 'down')
+-            yield call_and_check_rc('iw', 'dev', wlan, 'set', 'monitor', 'otherbss')
+-            yield call_and_check_rc('ip', 'link', 'set', wlan, 'up')
++            yield call_and_check_rc('@iproute2@/bin/ip', 'link', 'set', wlan, 'down')
++            yield call_and_check_rc('@iw@/bin/iw', 'dev', wlan, 'set', 'monitor', 'otherbss')
++            yield call_and_check_rc('@iproute2@/bin/ip', 'link', 'set', wlan, 'up')
+ 
+             # You can set own frequency channel for each card
+             if isinstance(settings.common.wifi_channel, dict):
+@@ -112,7 +112,7 @@ def init_wlans(max_bw, wlans):
+             else:
+                 channel = settings.common.wifi_channel
+ 
+-            yield call_and_check_rc('iw', 'dev', wlan, 'set', 'channel', str(channel), ht_mode)
++            yield call_and_check_rc('@iw@/bin/iw', 'dev', wlan, 'set', 'channel', str(channel), ht_mode)
+ 
+             txpower = settings.common.wifi_txpower
+ 
+@@ -121,7 +121,7 @@ def init_wlans(max_bw, wlans):
+                 txpower = txpower[wlan]
+ 
+             if txpower not in (None, 'off'):
+-                yield call_and_check_rc('iw', 'dev', wlan, 'set', 'txpower', 'fixed', str(txpower))
++                yield call_and_check_rc('@iw@/bin/iw', 'dev', wlan, 'set', 'txpower', 'fixed', str(txpower))
+ 
+     except ExecError as v:
+         if v.stdout:
+@@ -177,7 +177,7 @@ def init(profiles, wlans, cluster_mode):
+                 if ssh_user and ssh_port:
+                     dl.append(SSHClientProtocol(node,
+                                                 ssh_user,
+-                                                '/bin/bash',
++                                                '@bash@/bin/bash',
+                                                 key=ssh_key,
+                                                 port=ssh_port,
+                                                 use_agent=ssh_key is None,

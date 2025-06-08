@@ -1,0 +1,30 @@
+diff --git a/scripts/systemd/wfb-cluster.service b/scripts/systemd/wfb-cluster.service
+index 3e1ba1d..2e886cc 100644
+--- a/scripts/systemd/wfb-cluster.service
++++ b/scripts/systemd/wfb-cluster.service
+@@ -10,8 +10,8 @@ Conflicts=wifibroadcast.service
+ [Service]
+ Type=oneshot
+ RemainAfterExit=yes
+-ExecStart=/bin/true
+-ExecReload=/bin/true
++ExecStart=@coreutils@/bin/true
++ExecReload=@coreutils@/bin/true
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/scripts/systemd/wifibroadcast.service b/scripts/systemd/wifibroadcast.service
+index 0e809a5..160c532 100644
+--- a/scripts/systemd/wifibroadcast.service
++++ b/scripts/systemd/wifibroadcast.service
+@@ -12,8 +12,8 @@ Conflicts=wfb-cluster.service
+ [Service]
+ Type=oneshot
+ RemainAfterExit=yes
+-ExecStart=/bin/true
+-ExecReload=/bin/true
++ExecStart=@coreutils@/bin/true
++ExecReload=@coreutils@/bin/true
+ 
+ [Install]
+ WantedBy=multi-user.target

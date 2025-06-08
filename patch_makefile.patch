@@ -1,0 +1,26 @@
+diff --git a/Makefile b/Makefile
+index 789687e..8438963 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,6 +1,6 @@
+-SHELL = /bin/bash
++SHELL = @bash@/bin/bash
+ ARCH ?= $(shell uname -m)
+-PYTHON ?= /usr/bin/python3
++PYTHON ?= @python@/bin/python3
+ OS_CODENAME ?= $(shell lsb_release -cs)
+ 
+ ifneq ("$(wildcard .git)","")
+@@ -63,10 +63,10 @@ wfb_tun: src/wfb_tun.o
+ 	$(CC) -o $@ $^ $(LDFLAGS) -levent_core
+ 
+ wfb_rtsp: src/rtsp_server.c
+-	$(CC) $(_CFLAGS) $(shell pkg-config --cflags gstreamer-rtsp-server-1.0) -o $@ $^ $(shell pkg-config --libs gstreamer-rtsp-server-1.0)
++	$(CC) $(_CFLAGS) $(shell @pkg-config@/bin/pkg-config --cflags gstreamer-rtsp-server-1.0) -o $@ $^ $(shell @pkg-config@/bin/pkg-config --libs gstreamer-rtsp-server-1.0)
+ 
+ test: all_bin
+-	PYTHONPATH=`pwd` trial3 wfb_ng.tests
++	PYTHONPATH=`pwd` trial wfb_ng.tests
+ 
+ rpm:  all_bin $(ENV)
+ 	rm -rf dist

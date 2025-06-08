@@ -1,0 +1,15 @@
+diff --git a/wfb_ng/tests/test_proxy.py b/wfb_ng/tests/test_proxy.py
+index 120b5ef..e7c70f3 100644
+--- a/wfb_ng/tests/test_proxy.py
++++ b/wfb_ng/tests/test_proxy.py
+@@ -40,8 +40,8 @@ class SendPacket(DatagramProtocol):
+ 
+ class UDPProxyTestCase(unittest.TestCase):
+     def setUp(self):
+-        self.arm_proto = MavlinkARMProtocol(call_on_arm='/bin/true',
+-                                            call_on_disarm='/bin/true')
++        self.arm_proto = MavlinkARMProtocol(call_on_arm='@coreutils@/bin/true',
++                                            call_on_disarm='@coreutils@/bin/true')
+ 
+         self.p1 = MavlinkUDPProxyProtocol(addr=None, mirror=None, agg_max_size=1445, agg_timeout=1, inject_rssi=True, mavlink_sys_id=3, mavlink_comp_id=242,
+                                           rx_hooks=[self.arm_proto.dataReceived], tx_hooks=[self.arm_proto.dataReceived])
